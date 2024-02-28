@@ -1,0 +1,11 @@
+{
+  "welcome": "いらっしゃいませ!",
+  "sign_in_btn": "サインイン",
+  "sign_up_btn": "サインアップ",
+  "login_page_title": "サインイン",
+  "email": "Eメール",
+  "email_validation_empty": "あなたのメールアドレスを入力してください",
+  "password": "パスワード",
+  "password": "パスワードを入力してください",
+  "not_yet_register": "まだ登録されていませんか？ ここをクリック"
+}

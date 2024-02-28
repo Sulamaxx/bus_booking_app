@@ -1,0 +1,11 @@
+{
+  "welcome": "Bienvenido!",
+  "sign_in_btn": "Iniciar sesión",
+  "sign_up_btn": "Inscribirse",
+  "login_page_title": "Iniciar sesión",
+  "email": "Correo electrónico",
+  "email_validation_empty": "Por favor introduzca su correo electrónico",
+  "password": "Contraseña",
+  "password": "Por favor, introduzca su contraseña",
+  "not_yet_register": "Todavía no estas registrado? haga clic aquí"
+}

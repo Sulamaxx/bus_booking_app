@@ -1,20 +1,25 @@
 import 'package:bus_booking_app/screens/auth/signup_screen.dart';
 import 'package:bus_booking_app/screens/main/seat_selection_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
+
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
+
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign In'),
+        title: Text(AppLocalizations.of(context)!.login_page_title),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -24,15 +29,17 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 100,),
+                SizedBox(
+                  height: 100,
+                ),
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return AppLocalizations.of(context)!.email_validation_empty;
                     }
                     return null;
                   },
@@ -40,13 +47,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.password,
                   ),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return AppLocalizations.of(context)!.password_validation_empty;
                     }
                     return null;
                   },
@@ -58,18 +65,19 @@ class _SignInScreenState extends State<SignInScreen> {
                       _signIn();
                     }
                   },
-                  child: const Text('Sign In'),
+                  child:  Text(AppLocalizations.of(context)!.login_page_title),
                 ),
                 const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpScreen()),
                     );
                   },
                   child: Text(
-                    "Not registered yet? Click here",
+                    AppLocalizations.of(context)!.not_yet_register,
                     style: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -87,7 +95,10 @@ class _SignInScreenState extends State<SignInScreen> {
     // Implement your sign-in logic here
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SeatSelectionScreen(seatsNeeded: 2)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SeatSelectionScreen(seatsNeeded: 2)));
     // Now you can proceed with sign-in using the collected data
     // Example:
     // AuthService.signIn(email, password)

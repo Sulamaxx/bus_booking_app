@@ -1,0 +1,39 @@
+{
+  "welcome": "Welcome!",
+  "@welcome": {
+    "description": "Welcome to application"
+  },
+  "sign_in_btn": "Sign In",
+  "@sign_btn": {
+    "description": "Sign In Button"
+  },
+  "sign_up_btn": "Sign Up",
+  "@sign_up_btn": {
+    "description": "Sign Up Button"
+  },
+  "login_page_title": "Sign In",
+   "@login_page_title": {
+     "description": "Sign In Page Title"
+   },
+   "email": "Email",
+   "@email": {
+     "description": "User Email"
+   },
+   "email_validation_empty": "Please enter your email",
+   "@email_validation_empty": {
+     "description": "Please enter your email"
+   },
+   "password": "Password",
+   "@password": {
+     "description": "Password"
+   },
+   "password_validation_empty": "Please enter your password",
+   "@password_validation_empty": {
+     "description": "Please enter your password"
+   },
+   "not_yet_register": "Not registered yet? Click here",
+   "@not_yet_register": {
+     "description": "Not registered yet? Click here"
+   }
+
+}
