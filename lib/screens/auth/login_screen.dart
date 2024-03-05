@@ -1,5 +1,5 @@
 import 'package:bus_booking_app/screens/auth/signup_screen.dart';
-import 'package:bus_booking_app/screens/main/seat_selection_screen.dart';
+import 'package:bus_booking_app/screens/main/home_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,9 +29,18 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
                 SizedBox(
                   height: 100,
                 ),
+                Image(
+                  image: AssetImage(
+                    'assets/logo_bus_booking_app.png',
+                  ),
+                  width: 200,
+                  height: 200,
+                ),
+                const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -58,6 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     return null;
                   },
                 ),
+
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
@@ -67,6 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   },
                   child:  Text(AppLocalizations.of(context)!.login_page_title),
                 ),
+
                 const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
@@ -83,6 +94,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                 ),
+
               ],
             ),
           ),
@@ -95,10 +107,10 @@ class _SignInScreenState extends State<SignInScreen> {
     // Implement your sign-in logic here
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SeatSelectionScreen(seatsNeeded: 2)));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => SeatSelectionScreen(seatsNeeded: 2)));
     // Now you can proceed with sign-in using the collected data
     // Example:
     // AuthService.signIn(email, password)
@@ -107,5 +119,11 @@ class _SignInScreenState extends State<SignInScreen> {
     // }).catchError((error) {
     //   // Handle sign-in error
     // });
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomeScreen()));
+
   }
 }

@@ -26,6 +26,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image(
+                  image: AssetImage(
+                    'assets/logo_bus_booking_app.png',
+                  ),
+                  width: 200,
+                  height: 200,
+                ),
+                const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(
