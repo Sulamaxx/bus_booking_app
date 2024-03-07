@@ -1,3 +1,4 @@
+import 'package:bus_booking_app/screens/main/bus_selection_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -35,7 +36,9 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                   Container(
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _newBooking();
+                      },
                       child: Text('New Booking'),
                     ),
                   ),
@@ -54,7 +57,6 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                           height: 400,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
-
                             child: DataTable(
                               columnSpacing: 10,
                               dataRowHeight: 50,
@@ -62,25 +64,31 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                                 DataColumn(
                                   label: Text(
                                     'ID',
-                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 DataColumn(
                                   label: Text(
                                     'Name',
-                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 DataColumn(
                                   label: Text(
                                     'Profession',
-                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],
                               rows: List.generate(
                                 20, // Number of rows to generate
-                                    (index) => DataRow(cells: [
+                                (index) => DataRow(cells: [
                                   DataCell(Text('$index')),
                                   DataCell(Text('Name$index')),
                                   DataCell(Text('Profession$index')),
@@ -89,8 +97,6 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                             ),
                           ),
                         ),
-
-
                       ],
                     ),
                   ),
@@ -99,8 +105,13 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.red[600])),
-                    onPressed: () {},
-                    child: Text('LogOut'),
+                    onPressed: () {
+
+                    },
+                    child: Text(
+                      'LogOut',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -108,4 +119,11 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
       ),
     );
   }
+
+  void _newBooking(){
+    Navigator.push(context,
+    MaterialPageRoute(builder: (context)=>BusSelectionScreen())
+    );
+  }
+
 }

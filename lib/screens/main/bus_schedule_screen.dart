@@ -30,36 +30,18 @@ class _BusScheduleScreenState extends State<BusScheduleScreen> {
                     height: 300,
                   ),
                   const SizedBox(height: 40.0),
-                  // Container(
-                  //   width: 300,
-                  //   child: ElevatedButton(
-                  //     style: ButtonStyle(
-                  //       padding: MaterialStateProperty.all(
-                  //           EdgeInsets.symmetric(vertical: 30, horizontal: 30)),
-                  //     ),
-                  //     onPressed: () {},
-                  //     child: Text('Seat Booking Management'),
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 40),
-                  // Container(
-                  //   width: 300,
-                  //   child: ElevatedButton(
-                  //     style: ButtonStyle(
-                  //       padding: MaterialStateProperty.all(
-                  //           EdgeInsets.symmetric(vertical: 30, horizontal: 30)),
-                  //     ),
-                  //     onPressed: () {},
-                  //     child: Text('Bus Schedule'),
-                  //   ),
-                  // ),
+                  // Container(),
                   // const SizedBox(height: 100),
                   ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.red[600])),
                     onPressed: () {},
-                    child: Text('LogOut'),
+                    child: Text(
+                      'LogOut',
+                      style: TextStyle(color: Colors.white),
+                    ),
+
                   ),
                 ],
               ),

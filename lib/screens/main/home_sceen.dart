@@ -1,4 +1,4 @@
-import 'package:bus_booking_app/screens/main/BusScheduleScreen.dart';
+import 'package:bus_booking_app/screens/main/bus_schedule_screen.dart';
 import 'package:bus_booking_app/screens/main/booking_management_sceen.dart';
 import 'package:flutter/material.dart';
 
