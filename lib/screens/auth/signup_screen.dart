@@ -1,17 +1,25 @@
+import 'package:bus_booking_app/models/user.dart';
 import 'package:bus_booking_app/screens/auth/login_screen.dart';
+import 'package:bus_booking_app/screens/main/home_sceen.dart';
+import 'package:bus_booking_app/services/auth.dart';
 import 'package:flutter/material.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
+
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
+
 class _SignUpScreenState extends State<SignUpScreen> {
+  final AuthService _authService = AuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nicPassportController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   String _selectedGender = '';
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -30,10 +38,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   image: AssetImage(
                     'assets/logo_bus_booking_app.png',
                   ),
-                  width: 200,
-                  height: 200,
+                  width: 150,
+                  height: 150,
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(
@@ -46,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _passwordController,
                   decoration: const InputDecoration(
@@ -60,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _nicPassportController,
                   decoration: const InputDecoration(
@@ -73,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 TextFormField(
                   controller: _mobileController,
                   decoration: const InputDecoration(
@@ -86,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 DropdownButtonFormField<String>(
                   value: _selectedGender.isNotEmpty ? _selectedGender : null,
                   items: ['Male', 'Female'].map((String value) {
@@ -110,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -123,7 +131,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignInScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignInScreen()),
                     );
                   },
                   child: Text(
@@ -140,19 +149,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-  void _signUp() {
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
-    String nicPassport = _nicPassportController.text.trim();
-    String mobile = _mobileController.text.trim();
-    String gender = _selectedGender;
-    // Now you can proceed with signup using the collected data
-    // Example:
-    // AuthService.signUp(email, password, nicPassport, mobile, gender, name)
-    //     .then((user) {
-    //   // Handle successful signup
-    // }).catchError((error) {
-    //   // Handle signup error
-    // });
+
+  void _signUp() async {
+    UserModel user = UserModel(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+      nic: _nicPassportController.text.trim(),
+      mobile: _mobileController.text.trim(),
+      gender: _selectedGender,
+    );
+    Color color = Colors.red;
+    String output;
+    String? message = await _authService.signUpWithEmailAndPassword(user);
+
+    if (message ==
+        "[firebase_auth/weak-password] Password should be at least 6 characters") {
+      output = "Password should be at least 6 characters";
+      color = Colors.red;
+    } else if (message ==
+        "[firebase_auth/email-already-in-use] The email address is already in use by another account.") {
+      output = "The email address is already in use by another account.";
+      color = Colors.red;
+    } else if (message ==
+        "[firebase_auth/invalid-email] The email address is badly formatted.") {
+      output = "Invalid email check again";
+      color = Colors.red;
+    } else {
+      output = message!;
+      if (message == "Registration successful!") {
+        color = Colors.green;
+      } else {
+        color = Colors.red;
+      }
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color,
+        elevation: 8.0,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        content: Text(
+          output,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
+    );
+
+    if (output == "Registration successful!") {
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      });
+    }
   }
 }

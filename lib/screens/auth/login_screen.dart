@@ -1,6 +1,7 @@
 import 'package:bus_booking_app/screens/auth/signup_screen.dart';
 import 'package:bus_booking_app/screens/main/home_sceen.dart';
 import 'package:bus_booking_app/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -73,11 +74,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () async {
-                    // if (_formKey.currentState!.validate()) {
-                    //   _signIn();
-                    // }
-                    dynamic result = await _authService.signInAnon();
-                    print(result);
+                    if (_formKey.currentState!.validate()) {
+                      _signIn();
+                    }
                   },
                   child: Text(AppLocalizations.of(context)!.login_page_title),
                 ),
@@ -105,24 +104,48 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _signIn() {
+  void _signIn() async {
     // Implement your sign-in logic here
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => SeatSelectionScreen(seatsNeeded: 2)));
-    // Now you can proceed with sign-in using the collected data
-    // Example:
-    // AuthService.signIn(email, password)
-    //     .then((user) {
-    //   // Handle successful sign-in
-    // }).catchError((error) {
-    //   // Handle sign-in error
-    // });
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    String output = "";
+    Color color = Colors.red;
+    User? user = await _authService.signInWithEmailAndPassword(email, password);
+
+    if (user == null) {
+      output = "Invalid Email or Password";
+      color = Colors.red;
+    } else {
+      output = "Sign In successful!";
+      color = Colors.green;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color,
+        elevation: 8.0,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        content: Text(
+          output!,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
+    );
+
+    if (output == "Sign In successful!") {
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      });
+    }
   }
 }
