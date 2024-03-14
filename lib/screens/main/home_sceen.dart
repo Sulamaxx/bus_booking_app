@@ -1,8 +1,14 @@
+import 'dart:convert';
+
+import 'package:bus_booking_app/models/user.dart';
 import 'package:bus_booking_app/screens/auth/login_screen.dart';
-import 'package:bus_booking_app/screens/main/bus_schedule_screen.dart';
+import 'package:bus_booking_app/screens/main/test.dart';
 import 'package:bus_booking_app/screens/main/booking_management_sceen.dart';
 import 'package:bus_booking_app/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,9 +19,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
-
+  final LocalStorage storage = LocalStorage('user.json');
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -69,9 +76,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           backgroundColor:
                               MaterialStateProperty.all(Colors.red[600])),
                       onPressed: () {
-                        _logOut();
+                        _logOut(context);
                       },
-                      child: Text('LogOut'),
+                      child: Text(
+                        'LogOut',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
@@ -84,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+
 
   void _bookingManagement() {
     Navigator.push(
@@ -99,9 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _logOut() async {
+  void _logOut(context) async {
     String? message = await _authService.signOut();
-
+    await storage.clear();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.green,
@@ -129,4 +140,5 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
-}
+
+  }

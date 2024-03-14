@@ -6,6 +6,21 @@
   "email": "විද්යුත් තැපෑල",
   "email_validation_empty": "කරුණාකර ඔබගේ විද්‍යුත් තැපෑල ඇතුලත් කරන්න",
   "password": "මුරපදය",
-  "password": "ඔබගේ මුරපදය ඇතුල් කරන්න",
-  "not_yet_register": "තවමත් ලියාපදිංචි වී නැද්ද? මෙහි ක්ලික් කරන්න"
+  "password_validation_empty": "ඔබගේ මුරපදය ඇතුල් කරන්න",
+  "not_yet_register": "තවමත් ලියාපදිංචි වී නැද්ද? මෙහි ක්ලික් කරන්න",
+  "auth_user_log_null": "වලංගු නොවන ඊමේල් හෝ මුරපදය",
+  "auth_user_log_not_null": "පුරනය වීම සාර්ථකයි!",
+  "nic_passport": "ජාතික හැඳුනුම්පත/විදේශ ගමන් බලපත්\u200Dර අංකය",
+  "nic_passport_validation": "කරුණාකර ඔබගේ ජාතික හැඳුනුම්පත/විදේශ ගමන් බලපත්\u200Dර අංකය ඇතුලත් කරන්න",
+  "mobile_number": "ුරකථන අංකය",
+  "mobile_number_validation": "කරුණාකර ඔබගේ ජංගම දුරකථන අංකය ඇතුලත් කරන්න",
+  "gender_male": "පිරිමි",
+  "gender_female": "ගැහැණු",
+  "gender": "ස්ත්රී පුරුෂ භාවය",
+  "gender_validation": "කරුණාකර ඔබේ ලිංගභේදය තෝරන්න",
+  "already_exist_account": "දැනටමත් ගිණුමක් තිබේද? මෙහි ක්ලික් කරන්න",
+  "sign_up_auth_password_length": "මුරපදය අවම වශයෙන් අක්ෂර 6 ක් විය යුතුය",
+  "sign_up_auth_email_already_exist": "ඊමේල් ලිපිනය දැනටමත් වෙනත් ගිණුමක් භාවිතා කරයි.",
+  "sign_up_auth_invalid_email": "අවලංගු විද්\u200Dයුත් තැපෑල නැවත පරීක්ෂා කරන්න",
+  "sign_up_auth_register_success": "ලියාපදිංචිය සාර්ථකයි!"
 }

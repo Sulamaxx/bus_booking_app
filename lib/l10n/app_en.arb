@@ -34,6 +34,66 @@
    "not_yet_register": "Not registered yet? Click here",
    "@not_yet_register": {
      "description": "Not registered yet? Click here"
-   }
+   },
+  "auth_user_log_null": "Invalid Email or Password",
+  "@auth_user_log_null": {
+    "description": "Invalid Email or Password"
+  },
+  "auth_user_log_not_null": "Sign In successful!",
+  "@auth_user_log_not_null": {
+    "description": "Sign In successful!"
+  },
+  "nic_passport": "NIC/Passport Number",
+  "@nic_passport": {
+    "description": "NIC/Passport Number"
+  },
+  "nic_passport_validation": "Please enter your NIC/Passport number",
+  "@nic_passport_validation": {
+    "description": "Please enter your NIC/Passport number"
+  },
+  "mobile_number": "Mobile Number",
+  "@mobile_number": {
+    "description": "Mobile Number"
+  },
+  "mobile_number_validation": "Please enter your mobile number",
+  "@mobile_number_validation": {
+    "description": "Please enter your mobile number"
+  },
+  "gender_male": "Male",
+  "@gender_male": {
+    "description": "Male"
+  },
+  "gender_female": "Female",
+  "@gender_female": {
+    "description": "Female"
+  },
+  "gender": "Gender",
+  "@gender": {
+    "description": "Gender"
+  },
+  "gender_validation": "Please select your gender",
+  "@gender_validation": {
+    "description": "Please select your gender"
+  },
+  "already_exist_account": "Already have an account? Click here",
+  "@already_exist_account": {
+    "description": "Already have an account? Click here"
+  },
+  "sign_up_auth_password_length": "Password should be at least 6 characters",
+  "@sign_up_auth_password_length": {
+    "description": "Password should be at least 6 characters"
+  },
+  "sign_up_auth_email_already_exist": "The email address is already in use by another account.",
+  "@sign_up_auth_email_already_exist": {
+    "description": "The email address is already in use by another account."
+  },
+  "sign_up_auth_invalid_email": "Invalid email check again",
+  "@sign_up_auth_invalid_email": {
+    "description": "Invalid email check again"
+  },
+  "sign_up_auth_register_success": "Registration successful!",
+  "@sign_up_auth_register_success": {
+    "description": "Registration successful!"
+  }
 
 }

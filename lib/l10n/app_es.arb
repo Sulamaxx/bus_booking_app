@@ -6,6 +6,21 @@
   "email": "Correo electrónico",
   "email_validation_empty": "Por favor introduzca su correo electrónico",
   "password": "Contraseña",
-  "password": "Por favor, introduzca su contraseña",
-  "not_yet_register": "Todavía no estas registrado? haga clic aquí"
+  "password_validation_empty": "Por favor, introduzca su contraseña",
+  "not_yet_register": "Todavía no estas registrado? haga clic aquí",
+  "auth_user_log_null": "Correo electrónico o contraseña no válidos",
+  "auth_user_log_not_null": "¡Inicia sesión correctamente!",
+  "nic_passport": "número de NIC/pasaporte",
+  "nic_passport_validation": "Por favor ingrese su número de NIC/Pasaporte",
+  "mobile_number": "Número de teléfono móvil",
+  "mobile_number_validation": "Por favor, introduzca su número de móvil",
+  "gender_male": "Masculina",
+  "gender_female": "Femenina",
+  "gender": "Género",
+  "gender_validation": "por favor seleccione su género",
+  "already_exist_account": "¿Ya tienes una cuenta? haga clic aquí",
+  "sign_up_auth_password_length": "La contraseña debe tener al menos 6 caracteres.",
+  "sign_up_auth_email_already_exist": "La dirección de correo electrónico ya está en uso en otra cuenta.",
+  "sign_up_auth_invalid_email": "Verifique nuevamente el correo electrónico no válido",
+  "sign_up_auth_register_success": "¡Registro exitoso!"
 }

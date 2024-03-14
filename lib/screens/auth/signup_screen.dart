@@ -3,6 +3,7 @@ import 'package:bus_booking_app/screens/auth/login_screen.dart';
 import 'package:bus_booking_app/screens/main/home_sceen.dart';
 import 'package:bus_booking_app/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: Text(AppLocalizations.of(context)!.sign_up_btn),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -44,12 +45,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return AppLocalizations.of(context)!.email_validation_empty;
                     }
                     return null;
                   },
@@ -57,13 +58,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.password,
                   ),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return AppLocalizations.of(context)!.password_validation_empty;
                     }
                     return null;
                   },
@@ -71,12 +72,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _nicPassportController,
-                  decoration: const InputDecoration(
-                    labelText: 'NIC/Passport Number',
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.nic_passport,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your NIC/Passport number';
+                      return AppLocalizations.of(context)!.nic_passport_validation;
                     }
                     return null;
                   },
@@ -84,12 +85,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 10.0),
                 TextFormField(
                   controller: _mobileController,
-                  decoration: const InputDecoration(
-                    labelText: 'Mobile Number',
+                  keyboardType: TextInputType.number,
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.mobile_number,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your mobile number';
+                      return AppLocalizations.of(context)!.mobile_number_validation;
                     }
                     return null;
                   },
@@ -97,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 10.0),
                 DropdownButtonFormField<String>(
                   value: _selectedGender.isNotEmpty ? _selectedGender : null,
-                  items: ['Male', 'Female'].map((String value) {
+                  items: [AppLocalizations.of(context)!.gender_male, AppLocalizations.of(context)!.gender_female].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -108,12 +110,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _selectedGender = newValue!;
                     });
                   },
-                  decoration: const InputDecoration(
-                    labelText: 'Gender',
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.gender,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please select your gender';
+                      return AppLocalizations.of(context)!.gender_validation;
                     }
                     return null;
                   },
@@ -122,10 +124,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _signUp();
+                      _signUp(context);
                     }
                   },
-                  child: const Text('Sign Up'),
+                  child:  Text(AppLocalizations.of(context)!.sign_up_btn),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -136,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
                   },
                   child: Text(
-                    "Already have an account? Click here",
+                    AppLocalizations.of(context)!.already_exist_account,
                     style: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -150,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void _signUp() async {
+  void _signUp(context) async {
     UserModel user = UserModel(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
@@ -160,23 +162,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
     Color color = Colors.red;
     String output;
-    String? message = await _authService.signUpWithEmailAndPassword(user);
+    String? message = await _authService.signUpWithEmailAndPassword(user,context);
 
     if (message ==
         "[firebase_auth/weak-password] Password should be at least 6 characters") {
-      output = "Password should be at least 6 characters";
+      output = AppLocalizations.of(context)!.sign_up_auth_password_length;
       color = Colors.red;
     } else if (message ==
         "[firebase_auth/email-already-in-use] The email address is already in use by another account.") {
-      output = "The email address is already in use by another account.";
+      output = AppLocalizations.of(context)!.sign_up_auth_email_already_exist;
       color = Colors.red;
     } else if (message ==
         "[firebase_auth/invalid-email] The email address is badly formatted.") {
-      output = "Invalid email check again";
+      output = AppLocalizations.of(context)!.sign_up_auth_invalid_email;
       color = Colors.red;
     } else {
       output = message!;
-      if (message == "Registration successful!") {
+      if (message == AppLocalizations.of(context)!.sign_up_auth_register_success) {
         color = Colors.green;
       } else {
         color = Colors.red;
@@ -200,9 +202,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
 
-    if (output == "Registration successful!") {
+    if (output == AppLocalizations.of(context)!.sign_up_auth_register_success) {
       Future.delayed(Duration(seconds: 1), () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
         );

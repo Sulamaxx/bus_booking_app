@@ -4,6 +4,7 @@ import 'package:bus_booking_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:localstorage/localstorage.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final LocalStorage storage = new LocalStorage('user.json');
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      _signIn();
+                      _signIn(context);
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.login_page_title),
@@ -104,7 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _signIn() async {
+  void _signIn(context) async {
     // Implement your sign-in logic here
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
@@ -114,11 +116,40 @@ class _SignInScreenState extends State<SignInScreen> {
     User? user = await _authService.signInWithEmailAndPassword(email, password);
 
     if (user == null) {
-      output = "Invalid Email or Password";
+      output = AppLocalizations.of(context)!.auth_user_log_null;
       color = Colors.red;
     } else {
-      output = "Sign In successful!";
+      Map<String, dynamic> userData = {
+        'displayName': user.displayName,
+        'email': user.email,
+        'isEmailVerified': user.emailVerified,
+        'isAnonymous': user.isAnonymous,
+        'metadata': {
+          'creationTime': user.metadata.creationTime.toString(),
+          'lastSignInTime': user.metadata.lastSignInTime.toString(),
+        },
+        'phoneNumber': user.phoneNumber,
+        'photoURL': user.photoURL,
+        'providerData': user.providerData
+            .map((info) => {
+                  'displayName': info.displayName,
+                  'email': info.email,
+                  'phoneNumber': info.phoneNumber,
+                  'photoURL': info.photoURL,
+                  'providerId': info.providerId,
+                  'uid': info.uid,
+                })
+            .toList(),
+        'refreshToken': user.refreshToken,
+        'tenantId': user.tenantId,
+        'uid': user.uid,
+      };
+
+      // Convert the user data to JSON and store it
+      storage.setItem("user", userData);
+      output = AppLocalizations.of(context)!.auth_user_log_not_null;
       color = Colors.green;
+      print(storage.getItem("user"));
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -139,9 +170,9 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
 
-    if (output == "Sign In successful!") {
+    if (output == AppLocalizations.of(context)!.auth_user_log_not_null) {
       Future.delayed(Duration(seconds: 1), () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
         );

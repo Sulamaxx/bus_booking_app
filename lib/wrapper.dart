@@ -3,6 +3,9 @@ import 'package:bus_booking_app/screens/auth/signup_screen.dart';
 import 'package:bus_booking_app/screens/main/home_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:localstorage/localstorage.dart';
+
+final LocalStorage storage = LocalStorage('user.json');
 
 class Wrapper extends StatelessWidget {
   final void Function(String, String) changeLanguage;
@@ -13,11 +16,20 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () {
+      // print(storage.getItem("user"));
+      if (storage.getItem("user") != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }
+    });
+
     return MyHomePage(
       changeLanguage: changeLanguage,
       locale: locale,
     );
-    // return HomeScreen();
   }
 }
 
@@ -105,6 +117,7 @@ class MyHomePage extends StatelessWidget {
                         child: Text('Spa'),
                         value: 'es_ES',
                       ),
+
                     ],
                     onChanged: (String? value) {
                       if (value != null) {

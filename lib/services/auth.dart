@@ -1,22 +1,10 @@
 import 'package:bus_booking_app/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
-//  sign in anon
-  Future<User?> signInAnon() async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-      return user;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
 
 // sign in with email or password
 
@@ -34,19 +22,7 @@ class AuthService {
 
 // register with email and password
 
-  // Future<User?> signUpWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     UserCredential credential = await _auth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //     return credential.user;
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
-
-  Future<String?> signUpWithEmailAndPassword(UserModel user) async {
+  Future<String?> signUpWithEmailAndPassword(UserModel user,context) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: user.email, password: user.password);
@@ -57,7 +33,7 @@ class AuthService {
           'mobile': user.mobile,
           'gender': user.gender,
         });
-        return "Registration successful!";
+        return AppLocalizations.of(context)!.sign_up_auth_register_success;
       } else {
         return "Something went wrong try again later";
       }
@@ -70,21 +46,18 @@ class AuthService {
 // sign out
 
   Future<String?> signOut() async {
-   await _auth.signOut();
+    await _auth.signOut();
     return "Logout Successfully!";
   }
 
-//  Current User
 
-  Future<User?> currentUser() async {
-    try {
-      User? user = _auth.currentUser;
-      return user;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
+Future<User?> currentUser() async {
+  try {
+    User? user = _auth.currentUser;
+    return user;
+  } catch (e) {
+    print(e.toString());
+    return null;
   }
-
-
+}
 }

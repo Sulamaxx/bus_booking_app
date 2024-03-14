@@ -6,6 +6,21 @@
   "email": "Eメール",
   "email_validation_empty": "あなたのメールアドレスを入力してください",
   "password": "パスワード",
-  "password": "パスワードを入力してください",
-  "not_yet_register": "まだ登録されていませんか？ ここをクリック"
+  "password_validation_empty": "パスワードを入力してください",
+  "not_yet_register": "まだ登録されていませんか？ ここをクリック",
+  "auth_user_log_null": "無効なメールアドレスまたはパスワード",
+  "auth_user_log_not_null": "サインインが成功しました!",
+  "nic_passport": "NIC/パスポート番号",
+  "nic_passport_validation": "NIC/パスポート番号を入力してください",
+  "mobile_number": "携帯電話番号",
+  "mobile_number_validation": "携帯電話番号を入力してください",
+  "gender_male": "男",
+  "gender_female": "女性",
+  "gender": "性別",
+  "gender_validation": "あなたの性別を選択してください",
+  "already_exist_account": "すでにアカウントをお持ちですか？ここをクリック",
+  "sign_up_auth_password_length": "パスワードは6文字以上である必要があります",
+  "sign_up_auth_email_already_exist": "メールアドレスはすでに別のアカウントで使用されています。",
+  "sign_up_auth_invalid_email": "無効なメールチェックが再度発生しました",
+  "sign_up_auth_register_success": "登録に成功！"
 }

@@ -1,4 +1,6 @@
+import 'package:bus_booking_app/screens/auth/login_screen.dart';
 import 'package:bus_booking_app/screens/main/bus_selection_screen.dart';
+import 'package:bus_booking_app/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -12,6 +14,7 @@ class BookingManagementScreen extends StatefulWidget {
 }
 
 class _BookingManagementScreenState extends State<BookingManagementScreen> {
+  final AuthService _authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +109,7 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.red[600])),
                     onPressed: () {
-
+                      _logOut();
                     },
                     child: Text(
                       'LogOut',
@@ -124,6 +127,37 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
     Navigator.push(context,
     MaterialPageRoute(builder: (context)=>BusSelectionScreen())
     );
+  }
+
+  void _logOut() async {
+    String? message = await _authService.signOut();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.green,
+        elevation: 8.0,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        content: Text(
+          message!,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
+    );
+
+    if (message == "Logout Successfully!") {
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignInScreen()),
+        );
+      });
+    }
   }
 
 }
