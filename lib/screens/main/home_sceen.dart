@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bus_booking_app/models/user.dart';
 import 'package:bus_booking_app/screens/auth/login_screen.dart';
-import 'package:bus_booking_app/screens/main/test.dart';
+import 'package:bus_booking_app/screens/main/bus_schedule_screen.dart';
 import 'package:bus_booking_app/screens/main/booking_management_sceen.dart';
 import 'package:bus_booking_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
