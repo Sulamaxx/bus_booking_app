@@ -1,7 +1,10 @@
-import 'package:bus_booking_app/screens/main/test1.dart';
+import 'package:bus_booking_app/screens/auth/login_screen.dart';
+import 'package:bus_booking_app/services/auth.dart';
+import 'package:bus_booking_app/wrapper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 class BusScheduleScreen extends StatefulWidget {
   const BusScheduleScreen({Key? key}) : super(key: key);
@@ -11,6 +14,8 @@ class BusScheduleScreen extends StatefulWidget {
 }
 
 class _BusScheduleScreenState extends State<BusScheduleScreen> {
+  final AuthService _authService = AuthService();
+  final LocalStorage storage = LocalStorage('user.json');
   String? selectedRouteId; // Change to nullable
   List<DropdownMenuItem<String>> dropdownItems = [];
   List<Map<String, dynamic>> busesData = [];
@@ -102,72 +107,40 @@ class _BusScheduleScreenState extends State<BusScheduleScreen> {
                   hint: Text('Select a route'),
                 ),
                 if (busesData.isNotEmpty)
-                  // Container(
-                  //   height: MediaQuery.of(context).size.height *
-                  //       0.5, // Adjust height as needed
-                  //
-                  //   child: ListView.builder(
-                  //     // physics: NeverScrollableScrollPhysics(),
-                  //     // Prevent scrolling
-                  //     itemCount: busesData.length,
-                  //     itemBuilder: (BuildContext context, int index) {
-                  //       return ListTile(
-                  //         title: Text('Bus ID: ${busesData[index]['id']}'),
-                  //         subtitle: Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: <Widget>[
-                  //             Text(
-                  //                 'Running Number: ${busesData[index]['runningNo']}'),
-                  //             Text('Time: ${busesData[index]['time']}'),
-                  //           ],
-                  //
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-                  if (busesData.isNotEmpty)
-                    Column(
-                      children: [
-                        // Divider(), // Line separator
-                        Container(
-                          height: MediaQuery.of(context).size.height *
-                              0.6, // Adjust height as needed
-                          child: ListView.builder(
-                            // physics: NeverScrollableScrollPhysics(), // Prevent scrolling
-                            itemCount: busesData.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                title:
-                                    Text('Bus ID: ${busesData[index]['id']}'),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-
-                                    Text(
-                                        'Running Number: ${busesData[index]['runningNo']}'),
-                                    Text('Time: ${busesData[index]['time']}'),
-                                    Divider(),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                  Column(
+                    children: [
+                      // Divider(), // Line separator
+                      Container(
+                        height: MediaQuery.of(context).size.height *
+                            0.5, // Adjust height as needed
+                        child: ListView.builder(
+                          // physics: NeverScrollableScrollPhysics(), // Prevent scrolling
+                          itemCount: busesData.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              title: Text('Bus ID: ${busesData[index]['id']}'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                      'Running Number: ${busesData[index]['runningNo']}'),
+                                  Text('Time: ${busesData[index]['time']}'),
+                                  Divider(),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 40.0),
                 ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.red[600])),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RoutesAndBusesScreen(),
-                      ),
-                    );
+                    _logOut(context);
                   },
                   child: Text(
                     'LogOut',
@@ -180,5 +153,36 @@ class _BusScheduleScreenState extends State<BusScheduleScreen> {
         ),
       ),
     );
+  }
+
+  void _logOut(context) async {
+    String? message = await _authService.signOut();
+    await storage.clear();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.green,
+        elevation: 8.0,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        content: Text(
+          message!,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
+    );
+
+    if (message == "Logout Successfully!") {
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignInScreen()),
+        );
+      });
+    }
   }
 }

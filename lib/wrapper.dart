@@ -17,7 +17,6 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
-      // print(storage.getItem("user"));
       if (storage.getItem("user") != null) {
         Navigator.pushReplacement(
           context,
@@ -117,7 +116,6 @@ class MyHomePage extends StatelessWidget {
                         child: Text('Spa'),
                         value: 'es_ES',
                       ),
-
                     ],
                     onChanged: (String? value) {
                       if (value != null) {

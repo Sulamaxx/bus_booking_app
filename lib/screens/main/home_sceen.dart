@@ -20,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
   final LocalStorage storage = LocalStorage('user.json');
+
   @override
   Widget build(BuildContext context) {
 

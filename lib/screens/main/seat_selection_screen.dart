@@ -1,187 +1,230 @@
+import 'package:bus_booking_app/screens/main/payment_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 class SeatSelectionScreen extends StatefulWidget {
-  final int seatsNeeded;
-  SeatSelectionScreen({required this.seatsNeeded});
+  final String busId;
+  final String routeId;
+
+  SeatSelectionScreen({required this.busId, required this.routeId});
+
   @override
   _SeatSelectionScreenState createState() => _SeatSelectionScreenState();
 }
-class Seat {
-  var seatNumber;
-  var gender;
-  var available;
-  Seat(this.seatNumber, this.gender, this.available);
-  Seat.available(this.seatNumber, this.available);
-  void changeAvailability() {
-    available = !available;
-  }
-}
+
 class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
-  List<Seat> seats = [
-    Seat(1, null, true),
-    Seat(2, null, true),
-    Seat(3, 'M', false),
-    Seat(4, null, true),
-    Seat(5, null, true),
-    Seat(6, null, true),
-    Seat(7, 'F', false),
-    Seat(8, 'M', false),
-    Seat(9, null, true),
-    Seat(10, null, true),
-    Seat(11, null, true),
-    Seat(12, null, true),
-    Seat(13, null, true),
-    Seat(14, null, true),
-    Seat(15, 'M', false),
-    Seat(16, 'F', false),
-    Seat(17, 'F', false),
-    Seat(18, 'F', false),
-    Seat(19, 'M', false),
-    Seat(20, null, true),
-    Seat(21, null, true),
-    Seat(22, null, true),
-    Seat(23, null, true),
-    Seat(24, null, true),
-    Seat(25, null, true),
-    Seat(26, null, true),
-    Seat(27, null, true),
-    Seat(28, null, true),
-    Seat(29, null, true),
-    Seat(30, null, true),
-    Seat(31, null, true),
-    Seat(32, null, true),
-    Seat(33, null, true),
-    Seat(34, null, true),
-    Seat(35, null, true),
-    Seat(36, null, true),
-    Seat(37, null, true),
-    Seat(38, null, true),
-    Seat(39, null, true),
-    Seat(40, null, true),
-    Seat(41, null, true),
-    Seat(42, null, true),
-    Seat(43, null, true),
-    Seat(44, null, true),
-    Seat(45, null, true),
-  ];
-  List<Seat> selectedSeats = [];
-  void _toggleSeatSelection(Seat seat) {
-    if (selectedSeats.contains(seat)) {
+  List<Map<String, dynamic>> seatsData = [];
+  List<String> selectedSeats = [];
+  List<int> selectedSeatsNo = [];
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.busId);
+    print(widget.routeId);
+    getSeatsByBus(widget.busId, widget.routeId);
+  }
+
+  Future<void> getSeatsByBus(String? busId, String? routeId) async {
+    print("busId");
+    print(busId);
+    // Change to nullable
+    if (busId == null) return; // Added null check
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('routes')
+          .doc(routeId)
+          .collection('buses')
+          .doc(busId)
+          .collection('seats')
+          .get();
+
+      print("querySnapshot.docs");
+      print(querySnapshot.docs);
+
       setState(() {
-        selectedSeats.remove(seat);
-        seat.changeAvailability();
+        seatsData = querySnapshot.docs.map((DocumentSnapshot documentSnapshot) {
+          Map<String, dynamic> data =
+              documentSnapshot.data() as Map<String, dynamic>;
+          return {
+            'id': documentSnapshot.id,
+            'availability': data['availability'],
+            'booked_person': data['booked_person'],
+            'seat_no': data['seat_no'],
+          };
+        }).toList();
       });
-    } else {
-      setState(() {
-        if (selectedSeats.length < widget.seatsNeeded && seat.available) {
-          selectedSeats.add(seat);
-          seat.changeAvailability();
-        }
-      });
+    } catch (e) {
+      print('Error: $e');
     }
   }
-  bool _isSeatSelected(Seat seat) {
-    return selectedSeats.contains(seat);
-  }
+
   @override
   Widget build(BuildContext context) {
-    // Calculate total rows and columns
-    int totalRows = 11;
-    int totalColumns = 4; // 2 seats aisle 2 seats configuration for first 10 rows
-    // Create seat layout
-    List<Widget> seatRows = [];
-    for (int i = 0; i < totalRows - 1; i++) {
-      // Add 2 seats aisle 2 seats configuration for first 10 rows
-      seatRows.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(totalColumns, (index) {
-          int seatNumber = i * totalColumns + index + 1;
-          Seat seat = seats.firstWhere((seat) => seat.seatNumber == seatNumber,
-              orElse: () => Seat(-1, '', false));
-          return GestureDetector(
-            onTap: () => _toggleSeatSelection(seat),
-            child: Container(
-              width: 50,
-              height: 50,
-              margin: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: seat.available
-                    ? (_isSeatSelected(seat) ? Colors.blue : Colors.green)
-                    : Colors.grey,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Center(
-                child: Stack(
-                  children: [
-                    Text(
-                      seat.seatNumber.toString(),
-                      style: TextStyle(
-                        color: seat.available
-                            ? (_isSeatSelected(seat)
-                            ? Colors.white
-                            : Colors.white)
-                            : Colors.black,
-                      ),
-                    ),
-                    if (!seat.available && seat.gender != null)
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Icon(
-                          seat.gender == 'M'
-                              ? Icons.male
-                              : Icons.female,
-                          color: Colors.white,
-                          size: 16,
-                        ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }),
-      ));
-    }
-    // Add last row with 5 seats
-    seatRows.add(Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(5, (index) {
-        int seatNumber = (totalRows - 1) * totalColumns + index + 1;
-        Seat seat = seats.firstWhere((seat) => seat.seatNumber == seatNumber,
-            orElse: () => Seat(-1, '', false));
-        return GestureDetector(
-          onTap: () => _toggleSeatSelection(seat),
-          child: Container(
-            width: 50,
-            height: 50,
-            margin: EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: seat.available
-                  ? (_isSeatSelected(seat) ? Colors.blue : Colors.green)
-                  : Colors.grey,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: Text(
-                seat.seatNumber.toString(),
-                style: TextStyle(
-                  color: seat.available
-                      ? (_isSeatSelected(seat) ? Colors.white : Colors.white)
-                      : Colors.black,
-                ),
-              ),
-            ),
-          ),
-        );
-      }),
-    ));
+    // Sort the seatsData list by seat number
+    seatsData.sort((a, b) => a['seat_no'].compareTo(b['seat_no']));
     return Scaffold(
       appBar: AppBar(
         title: Text('Seat Selection'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: seatRows,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: seatsData.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Map<String, dynamic> seatData = seatsData[index];
+                      bool isAvailable = seatData['availability'];
+                      String? bookedPerson = seatData['booked_person'];
+                      int seatNo = seatData['seat_no'];
+                      String id = seatData['id'];
+
+                      return SeatItem(
+                        seatNo: seatNo,
+                        isAvailable: isAvailable,
+                        bookedPerson: bookedPerson,
+                        id: id,
+                        busId: widget.busId,
+                        routeId: widget.routeId,
+                        updateSeatSelection: (selected) {
+                          setState(() {
+                            if (selected) {
+                              selectedSeats.add(id);
+                              selectedSeatsNo.add(seatNo);
+                            } else {
+                              selectedSeats.remove(id);
+                              selectedSeatsNo.remove(seatNo);
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Perform booking for selected seats
+              print('Selected seats: $selectedSeats');
+              print('Selected seatsNo: $selectedSeatsNo');
+              // Implement your booking logic here
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PaymentScreen(
+                          selectedSeats: selectedSeats,
+                          selectedSeatsNo: selectedSeatsNo,
+                          busId: widget.busId,
+                          routeId: widget.routeId)));
+            },
+            child: Text('Book Selected Seats'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SeatItem extends StatefulWidget {
+  final int seatNo;
+  final bool isAvailable;
+  final String? bookedPerson;
+  final String? id;
+  final String busId;
+  final String routeId;
+  final Function(bool) updateSeatSelection;
+
+  SeatItem({
+    required this.seatNo,
+    required this.isAvailable,
+    this.bookedPerson,
+    this.id,
+    required this.busId,
+    required this.routeId,
+    required this.updateSeatSelection,
+  });
+
+  @override
+  _SeatItemState createState() => _SeatItemState();
+}
+
+class _SeatItemState extends State<SeatItem> {
+  bool isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    Color seatColor = isSelected
+        ? Colors.blue
+        : (widget.isAvailable ? Colors.green : Colors.red);
+    IconData seatIcon = widget.isAvailable
+        ? Icons.airline_seat_recline_extra
+        : Icons.airline_seat_flat;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          if (widget.isAvailable) {
+            setState(() {
+              isSelected = !isSelected;
+              widget.updateSeatSelection(isSelected);
+            });
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: seatColor,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                seatIcon,
+                color: Colors.white,
+                size: 32.0,
+              ),
+              SizedBox(height: 4.0),
+              Text(
+                'Seat ${widget.seatNo}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (!widget.isAvailable)
+                Text(
+                  'Booked: ${widget.bookedPerson}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
